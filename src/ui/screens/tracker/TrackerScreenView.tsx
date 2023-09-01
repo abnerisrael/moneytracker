@@ -1,10 +1,12 @@
 import React from "react";
 import styled from 'styled-components/native';
 import { TransactionHistory } from "./components/TransactionHistory";
+import { MonthReferenceSelector } from "./components/MonthReferenceSelector";
 
 export const TrackerScreenView = () => {
   return (
     <ScreenView>
+      <MonthReferenceSelector />
       <MoneyAvaliableView>
         <Subtitle>Saldo disponível</Subtitle>
         <LabelMoneyAvaliableLabel>R$ 1000,00</LabelMoneyAvaliableLabel>
