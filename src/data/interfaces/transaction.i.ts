@@ -4,5 +4,6 @@ export interface Transaction {
     how_much: number,
     where: string,
     when: string,
-    as: string
+    as: string,
+    type: 'input' | 'output'
 };

@@ -6,7 +6,7 @@ import { useTrackerScreenViewModel } from "./useTrackerScreenViewModel";
 
 export const TrackerScreenView = () => {
 
-  const {transactions} = useTrackerScreenViewModel();
+  const {transactions, totalInputs, totalOutputs} = useTrackerScreenViewModel();
 
   return (
     <ScreenView>
@@ -17,11 +17,11 @@ export const TrackerScreenView = () => {
         <EntradasSaidasView>
           <EntradasView>
             <Subtitle>Entradas</Subtitle>
-            <LabelMoneyEntradaLabel>+ R$ 1500,00</LabelMoneyEntradaLabel>
+            <LabelMoneyEntradaLabel>+ R$ {totalInputs}</LabelMoneyEntradaLabel>
           </EntradasView>
           <SaidasView>
             <Subtitle>Saídas</Subtitle>
-            <LabelMoneySaidaLabel>- R$ 500,00</LabelMoneySaidaLabel>
+            <LabelMoneySaidaLabel>- R$ {totalOutputs}</LabelMoneySaidaLabel>
           </SaidasView>
         </EntradasSaidasView>
       </MoneyAvaliableView>
