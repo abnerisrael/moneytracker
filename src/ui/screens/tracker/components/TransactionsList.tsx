@@ -1,16 +1,18 @@
 import React from "react";
 import { FlatList } from "react-native";
 import styled from "styled-components/native";
-import { iTransaction } from "../../../../data/interfaces/transaction";
+import { Transaction } from "../../../../data/interfaces/transaction.i";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-
-
 interface TransactionListProps {
-    data: iTransaction[]
+    data: Transaction[]
 }
 
 export const TransactionsList = (props: TransactionListProps) => {
+    if (props.data.length < 2) {
+        return <TransactionItem {...props.data[0]} />
+    }
+
     return (
         <TransactionListView>
             <FlatList
@@ -23,8 +25,7 @@ export const TransactionsList = (props: TransactionListProps) => {
 };
 
 
-const TransactionItem = (props: iTransaction) => {
-    console.log(props);
+const TransactionItem = (props: Transaction) => {
     return (
         <TransactionItemView>
             <ItemLeft>

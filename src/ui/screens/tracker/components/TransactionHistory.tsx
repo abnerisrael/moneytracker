@@ -1,17 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import { SearchInput } from '../../../components/SearchInput';
 import { TransactionsList } from './TransactionsList';
 import { TransactionActions } from './TransactionActions';
+import { Transaction } from '../../../../data/interfaces/transaction.i';
 
-const transactions = require('../__mocks__/transactions.json');
+type TransactionHistoryProps = {
+  transactions: Transaction[],
+}
 
-export const TransactionHistory = () => {
+export const TransactionHistory = ({transactions}:TransactionHistoryProps) => {
+  const [findedTransactions, setFindedTransactions] = useState<Transaction[]>([]);
+
+  useEffect(()=> {
+    setFindedTransactions(transactions);
+  }, [transactions]);
+
+  function searchObjectsInArrays(collection: Transaction[], searchText: string) {
+    return collection.filter((transaction) => {
+      return Object.values(transaction).some((value) => `${value}`.includes(searchText));
+    });
+  }
+
+  function handleOnChangeText(searchText: string) {
+    const finded = searchObjectsInArrays(transactions, searchText);
+    setFindedTransactions(finded);
+  }
+
     return (
         <TransactionHistoryView>
-            <SearchInput />
+            <SearchInput onChangeText={handleOnChangeText}/>
             <TransactionListAreaView>
-                <TransactionsList data={transactions}/>
+                <TransactionsList data={findedTransactions}/>
                 <TransactionActions onAddMoney={()=>{}} onRemoveMoney={()=>{}}/>
             </TransactionListAreaView>
         </TransactionHistoryView>

@@ -2,11 +2,15 @@ import React from 'react';
 import styled from 'styled-components/native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-export const SearchInput = () => {
+type SearchInputProps = {
+    onChangeText: (text: string) => void
+}
+
+export const SearchInput = ({onChangeText}: SearchInputProps) => {
     return (
         <SearchInputView>
             <FontAwesome name="search" size={20} color="#838383" style={{alignSelf: 'center'}}/>
-            <Input placeholder='Buscar' placeholderTextColor="#838383"/>
+            <Input placeholder='Buscar' placeholderTextColor="#838383" onChangeText={onChangeText}/>
         </SearchInputView>
     );
 };

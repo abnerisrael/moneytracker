@@ -1,4 +1,4 @@
-export interface iTransaction {
+export interface Transaction {
     id: string,
     what: string,
     how_much: number,

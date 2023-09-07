@@ -1,4 +1,4 @@
-[ 
+let data = [ 
     {
         "id": "1",
         "what":"Recarga Celular",
@@ -15,4 +15,8 @@
         "when":"2023-08-01 13:00:00.000",
         "as":"DEBIT"
     } 
-]
+];
+
+export function list(): Array<any> {
+    return data;
+}
