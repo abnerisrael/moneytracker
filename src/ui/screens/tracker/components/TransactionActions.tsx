@@ -1,18 +1,19 @@
 import styled from 'styled-components/native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { useNavigation } from '@react-navigation/native';
 
-type TransactionActionsProps = {
-    onAddMoney: () => void,
-    onRemoveMoney: () => void
-}
+export const TransactionActions = () => {
+    const {navigate} = useNavigation()
 
-export const TransactionActions = (props: TransactionActionsProps) => {
+    const handleAddMoney = () => navigate('register');
+    const handleRemoveMoney = () => navigate('register');
+
     return(
         <TransactionActionsView>
-            <TransactionIconView onPress={props.onAddMoney}>
+            <TransactionIconView onPress={handleAddMoney}>
                 <FontAwesome name="plus" size={20} color="#000" style={{alignSelf: 'center'}}/>
             </TransactionIconView>
-            <TransactionIconView onPress={props.onRemoveMoney}>
+            <TransactionIconView onPress={handleRemoveMoney}>
                 <FontAwesome name="minus" size={20} color="#000" style={{alignSelf: 'center'}}/>
             </TransactionIconView>
         </TransactionActionsView>

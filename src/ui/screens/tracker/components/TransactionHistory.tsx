@@ -32,7 +32,7 @@ export const TransactionHistory = ({transactions}:TransactionHistoryProps) => {
             <SearchInput onChangeText={handleOnChangeText}/>
             <TransactionListAreaView>
                 <TransactionsList data={findedTransactions}/>
-                <TransactionActions onAddMoney={()=>{}} onRemoveMoney={()=>{}}/>
+                <TransactionActions />
             </TransactionListAreaView>
         </TransactionHistoryView>
     );
