@@ -4,21 +4,21 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useNavigation } from "@react-navigation/native";
 import { useTransaction } from "../../redux/features/transaction/useTransaction";
 
-export const WhatScreenView = () => {
+export const WhenScreenView = () => {
 
   const {navigate} = useNavigation();
 
-  const {setWhat} = useTransaction();
+  const {setWhen} = useTransaction();
 
-  const handleNext = () => navigate('howmuch');
+  const handleNext = () => navigate('as');
 
   return (
     <ScreenView>
       <Input 
         multiline
         numberOfLines={4} 
-        placeholder="What"
-        onChangeText={setWhat}
+        placeholder="When"
+        onChangeText={setWhen}
       />
       <TransactionIconView onPress={handleNext}>
         <FontAwesome name="arrow-right" size={20} color="#000" style={{alignSelf: 'center'}}/>
@@ -51,3 +51,4 @@ const ScreenView =  styled.View`
   justify-content: center;
   align-items: center;
 `;
+  

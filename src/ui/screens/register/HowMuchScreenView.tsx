@@ -2,10 +2,13 @@ import React from "react";
 import styled from 'styled-components/native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useNavigation } from "@react-navigation/native";
+import { useTransaction } from "../../redux/features/transaction/useTransaction";
 
 export const HowMuchScreenView = () => {
 
   const {navigate} = useNavigation();
+
+  const {setHowMuch} = useTransaction();
 
   const handleNext = () => navigate('where');
 
@@ -15,6 +18,7 @@ export const HowMuchScreenView = () => {
         multiline
         numberOfLines={4} 
         placeholder="How Much"
+        onChangeText={(value: string) => setHowMuch(parseFloat(value))}
       />
       <TransactionIconView onPress={handleNext}>
         <FontAwesome name="arrow-right" size={20} color="#000" style={{alignSelf: 'center'}}/>

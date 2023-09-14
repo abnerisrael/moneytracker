@@ -1,36 +1,64 @@
-import React from "react";
+import React, {useState} from "react";
+import { StyleSheet } from "react-native";
 import styled from 'styled-components/native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useNavigation } from "@react-navigation/native";
+import { useTransaction } from "../../redux/features/transaction/useTransaction";
+import { As } from "../../../data/interfaces/transaction.i";
+import { Chip } from "../../components/Chips";
+import { FontAwesomeIconsName } from "../../components/IconsName";
 
 export const AsScreenView = () => {
 
+  const [payment, setPayment] = useState<As | undefined>();
+
   const {navigate} = useNavigation();
 
-  const handleNext = () => navigate('tracker');
+  const {setAs} = useTransaction();
+
+  const handleNext = () => {
+    setAs(payment as As);
+    navigate('tracker')
+  };
+
+  type PaymentTypes = {
+    type: As,
+    icon?: FontAwesomeIconsName
+  };
+
+  const paymentTypes: PaymentTypes[] = [
+    {type: "CARD", icon: "credit-card-alt"},
+    {type: "DEBIT", icon: "credit-card"},
+    {type: "MONEY", icon: "money"},
+    {type: "PIX", icon: "qrcode"},
+    {type: "OTHER"},
+  ]
 
   return (
     <ScreenView>
-      <Input 
-        multiline
-        numberOfLines={4} 
-        placeholder="As"
-      />
-      <TransactionIconView onPress={handleNext}>
+      <Label style={{marginBottom: 20}}>As</Label>
+      <AreaChipsView>
+        {paymentTypes.map(({type, icon}) => (
+          <Chip key={type} selected={payment == type} icon={icon} onPress={() => setPayment(type)} style={styles.chip}>
+            {type}
+          </Chip>
+        ))}
+      </AreaChipsView>
+      <NextButton onPress={handleNext}>
         <FontAwesome name="arrow-right" size={20} color="#000" style={{alignSelf: 'center'}}/>
-      </TransactionIconView>
+      </NextButton>
     </ScreenView>
   );
 };
 
-const Input = styled.TextInput`
-  flex: 1;
-  border-bottom: 1px solid black;
-  font-size: 28px;
-  height: 100px;
-`;
+const styles = StyleSheet.create({
+  chip: {
+    marginRight: 10,
+    marginBottom: 10
+  }
+})
 
-const TransactionIconView = styled.TouchableOpacity`
+const NextButton = styled.TouchableOpacity`
   flex-direction: row;
   border-radius: 50px;
   background-color: #f0f0f0;
@@ -46,4 +74,15 @@ const ScreenView =  styled.View`
   padding: 40px;
   justify-content: center;
   align-items: center;
+`;
+
+const AreaChipsView =  styled.View`
+  flex: 1;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
+
+const Label = styled.Text`
+  font-size: 28;
 `;

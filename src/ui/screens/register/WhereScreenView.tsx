@@ -2,12 +2,15 @@ import React from "react";
 import styled from 'styled-components/native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useNavigation } from "@react-navigation/native";
+import { useTransaction } from "../../redux/features/transaction/useTransaction";
 
 export const WhereScreenView = () => {
 
   const {navigate} = useNavigation();
 
-  const handleNext = () => navigate('as');
+  const {setWhere} = useTransaction();
+
+  const handleNext = () => navigate('when');
 
   return (
     <ScreenView>
@@ -15,6 +18,7 @@ export const WhereScreenView = () => {
         multiline
         numberOfLines={4} 
         placeholder="Where"
+        onChangeText={setWhere}
       />
       <TransactionIconView onPress={handleNext}>
         <FontAwesome name="arrow-right" size={20} color="#000" style={{alignSelf: 'center'}}/>
