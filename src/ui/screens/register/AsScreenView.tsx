@@ -7,8 +7,11 @@ import { useTransaction } from "../../redux/features/transaction/useTransaction"
 import { As } from "../../../data/interfaces/transaction.i";
 import { Chip } from "../../components/Chips";
 import { FontAwesomeIconsName } from "../../components/IconsName";
+import { useRegisterTransactionViewModel } from "./useRegisterTransactionViewModel";
 
 export const AsScreenView = () => {
+
+  const {registerTransaction} = useRegisterTransactionViewModel();
 
   const [payment, setPayment] = useState<As | undefined>();
 
@@ -18,7 +21,8 @@ export const AsScreenView = () => {
 
   const handleNext = () => {
     setAs(payment as As);
-    navigate('tracker')
+    registerTransaction();
+    navigate('tracker');
   };
 
   type PaymentTypes = {
