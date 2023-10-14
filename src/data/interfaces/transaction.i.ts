@@ -1,9 +1,13 @@
+export type As = 'DEBIT' | 'PIX' | 'CARD' | 'MONEY' | 'OTHER';
+
+export type Type = 'input' | 'output';
+
 export interface Transaction {
-    id: string,
+    id?: string,
     what: string,
     how_much: number,
     where: string,
     when: string,
-    as: 'DEBIT' | 'PIX' | 'CARD' | 'MONEY',
-    type: 'input' | 'output'
+    as?: As,
+    type?: Type
 };
