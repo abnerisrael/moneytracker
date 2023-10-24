@@ -83,6 +83,7 @@ export const RegisterTransactionScreenView = () => {
             onChangeText={onChange}
             value={value}
             mask={Masks.BRL_CURRENCY}
+            keyboardType="numeric"
           />
         )}
         name="howMuch"
