@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useRegisterTransactionViewModel } from './useRegisterTransactionViewModel';
+import { useRegisterTransactionViewModel } from './useRegisterTransactionScreenViewModel';
 
 const SaveDataScreenView: React.FC = () => {
 

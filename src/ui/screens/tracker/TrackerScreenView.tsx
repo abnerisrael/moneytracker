@@ -3,6 +3,7 @@ import styled from 'styled-components/native';
 import { TransactionHistory } from "./components/TransactionHistory";
 import { MonthReferenceSelector } from "./components/MonthReferenceSelector";
 import { useTrackerScreenViewModel } from "./useTrackerScreenViewModel";
+import { TransactionActions } from "./components/TransactionActions";
 
 export const TrackerScreenView = () => {
 
@@ -27,6 +28,7 @@ export const TrackerScreenView = () => {
       </MoneyAvaliableView>
       <HistoryAreaView>
         <TransactionHistory transactions={transactions}/>
+        <TransactionActions />
       </HistoryAreaView>
     </ScreenView>
   );

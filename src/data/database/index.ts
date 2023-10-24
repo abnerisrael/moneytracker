@@ -1,11 +1,11 @@
 import Realm  from 'realm';
 import {createRealmContext} from '@realm/react';
-import { TransactionSchema } from './schemas/transaction.schema';
+import { Transaction } from './models/transaction.model';
 
 
 // Create a configuration object
 const realmConfig: Realm.Configuration = {
-  schema: [TransactionSchema],
+  schema: [Transaction],
 };
 
 // Create a realm context

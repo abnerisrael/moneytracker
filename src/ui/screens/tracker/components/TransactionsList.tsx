@@ -13,11 +13,13 @@ export const TransactionsList = (props: TransactionListProps) => {
         return <TransactionItem {...props.data[0]} />
     }
 
+    console.log('TransactionsList', props.data);
+
     return (
         <TransactionListView>
             <FlatList
                 data={props.data}
-                keyExtractor={item => item.id}
+                keyExtractor={item => item._id}
                 renderItem={({item}) => <TransactionItem {...item} />}
             />
         </TransactionListView>
