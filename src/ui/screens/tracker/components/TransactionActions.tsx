@@ -5,16 +5,13 @@ import { useTransaction } from '../../../redux/features/transaction/useTransacti
 
 export const TransactionActions = () => {
     const {navigate} = useNavigation();
-    const {setType} = useTransaction();
 
     const handleAddMoney = () => {
-        setType('input');
-        navigate('register');
+        navigate('register', {type: 'input'});
     }
     
     const handleRemoveMoney = () => {
-        setType('output');
-        navigate('register');
+        navigate('register', {type: 'output'});
     }
 
     return(

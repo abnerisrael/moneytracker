@@ -7,7 +7,7 @@ import { TransactionActions } from "./components/TransactionActions";
 
 export const TrackerScreenView = () => {
 
-  const {transactions, totalInputs, totalOutputs} = useTrackerScreenViewModel();
+  const {totalInputs, totalOutputs} = useTrackerScreenViewModel();
 
   return (
     <ScreenView>
@@ -27,7 +27,7 @@ export const TrackerScreenView = () => {
         </EntradasSaidasView>
       </MoneyAvaliableView>
       <HistoryAreaView>
-        <TransactionHistory transactions={transactions}/>
+        <TransactionHistory />
         <TransactionActions />
       </HistoryAreaView>
     </ScreenView>

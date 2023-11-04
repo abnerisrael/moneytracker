@@ -1,6 +1,6 @@
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-import { As, Type, Transaction as iTransaction } from "../../interfaces/transaction.i";
+import { As, Type, ITransaction as iTransaction } from "../../interfaces/transaction.i";
 import { iDataBaseModel } from '../../interfaces/database.i';
 import { ObjectSchema } from 'realm';
 import { TransactionSchema } from '../schemas/transaction.schema';

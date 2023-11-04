@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import styled from 'styled-components/native';
-import { As } from "../../../data/interfaces/transaction.i";
+import { As, Type } from "../../../data/interfaces/transaction.i";
 import { FontAwesomeIconsName } from "../../components/IconsName";
 import { Chip } from "../../components/Chips";
-import { StyleSheet } from "react-native";
+import { Keyboard, StyleSheet } from "react-native";
 import Tipography from "../../styles/tipography";
 import { FiledTextInput } from "../../components/FiledTextInput";
 import { TextButton } from "../../components/TextButton";
@@ -12,13 +12,16 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup";
 import { Color } from "../../styles/color";
-import MaskInput, { Masks } from 'react-native-mask-input';
+import { Masks } from 'react-native-mask-input';
 import { MaskTextInput } from "../../components/MaskTextInput";
+import { useRegisterTransactionScreenViewModel } from "./useRegisterTransactionScreenViewModel";
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { MainStackParamList } from "../../navigation/MainStackNavigation";
 
 
 type FormTransaction = {
   what: string;
-  howMuch: string;
+  how_much: string;
   when: string;
   where: string;
   as: string;
@@ -27,7 +30,7 @@ type FormTransaction = {
 const schema = yup
   .object({
     what: yup.string().required(),
-    howMuch: yup.string().required(),
+    how_much: yup.string().required(),
     when: yup.string().required(),
     where: yup.string().required(),
     as: yup.string().required(),
@@ -48,7 +51,12 @@ const paymentTypes: PaymentTypes[] = [
   {type: "OTHER"},
 ]
 
-export const RegisterTransactionScreenView = () => {
+type Props = NativeStackScreenProps<MainStackParamList, 'register'>;
+
+export const RegisterTransactionScreenView = ({route}: Props) => {
+
+  const {datePicker, onSubmit} = useRegisterTransactionScreenViewModel(route?.params?.type);
+
   const {
     control,
     handleSubmit,
@@ -56,12 +64,24 @@ export const RegisterTransactionScreenView = () => {
     setValue,
   } = useForm<FormTransaction>({
     resolver: yupResolver(schema),
+    defaultValues: {
+      when: datePicker.getDate().format('DD/MM/Y')
+    }
   });
 
-  const onSubmit = (data: any) => console.log(data);
+  datePicker.subscribeHandlerChange((date)=>{
+    setValue("when", date.format('DD/MM/Y'));
+  });
+
+  const handleOnPressWhen = () => {
+    datePicker.showDatepicker();
+  }
+
+  const title = route?.params?.type === "input" ? 'Input Register' : 'Output Register';
 
   return (
     <ScreenView>
+      <Title>{title}</Title>
       <Controller
         control={control}
         render={({ field: { onChange, value } }) => (
@@ -86,17 +106,18 @@ export const RegisterTransactionScreenView = () => {
             keyboardType="numeric"
           />
         )}
-        name="howMuch"
+        name="how_much"
       />
-      {errors.howMuch && <ErrorMsg>{errors.howMuch.message}</ErrorMsg>}
+      {errors.how_much && <ErrorMsg>{errors.how_much.message}</ErrorMsg>}
       <Controller
         control={control}
-        render={({ field: {value, onChange} }) => (
+        render={({ field: {value} }) => (
           <FiledTextInput
             label="When"
             placeholder="When"
-            onChangeText={onChange}
             value={value}
+            onPressIn={handleOnPressWhen}
+            onFocus={() => Keyboard.dismiss()}
           />
         )}
         name="when"
@@ -155,6 +176,11 @@ const ScreenView =  styled.View`
   padding: 40px;
 `;
 
+const Title = styled.Text`
+  color: ${Color.Black};
+  font-size: ${Tipography.Title.Large.size}px;
+  font-weight: ${Tipography.Title.Large.weight};
+`
 
 const AreaChipsView =  styled.View`
   flex: 1;

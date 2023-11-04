@@ -1,38 +1,27 @@
 import React from "react";
-import { FlatList } from "react-native";
 import styled from "styled-components/native";
-import { Transaction } from "../../../../data/interfaces/transaction.i";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { Transaction } from "../../../../data/database/models/transaction.model";
+import { Transaction as ITransaction } from "../../../../data/interfaces/transaction.i";
+import { useQuery } from "../../../../data/database";
 
-interface TransactionListProps {
-    data: Transaction[]
-}
+export const TransactionsList = () => {
 
-export const TransactionsList = (props: TransactionListProps) => {
-    if (props.data.length < 2) {
-        return <TransactionItem {...props.data[0]} />
-    }
-
-    console.log('TransactionsList', props.data);
+    const transactionsQuery = useQuery(Transaction);
 
     return (
         <TransactionListView>
-            <FlatList
-                data={props.data}
-                keyExtractor={item => item._id}
-                renderItem={({item}) => <TransactionItem {...item} />}
-            />
+           {transactionsQuery.map(transaction => <TransactionItem key={transaction._id} {...transaction}/>)}
         </TransactionListView>
     );
 };
 
-
-const TransactionItem = (props: Transaction) => {
+const TransactionItem = (props: ITransaction) => {
     return (
         <TransactionItemView>
             <ItemLeft>
                 <TransactionIconView>
-                    <FontAwesome name="money" size={20} color="#000" style={{alignSelf: 'center'}}/>
+                    <FontAwesome name="money" size={20} color="#000" style={{ alignSelf: 'center' }} />
                 </TransactionIconView>
             </ItemLeft>
             <ItemCenter>
@@ -42,21 +31,21 @@ const TransactionItem = (props: Transaction) => {
                 <AsLabel>{props.as}</AsLabel>
             </ItemCenter>
             <ItemRight>
-                <WhenLabel>1 AGO</WhenLabel>
+                <WhenLabel>{props.when}</WhenLabel>
             </ItemRight>
         </TransactionItemView>
     );
 };
 
 
-const TransactionListView = styled.View`
+const TransactionListView = styled.ScrollView`
   flex: 1;
 `;
 
 const TransactionItemView = styled.View`
   flex: 1;
   flex-direction: row;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 `;
 
 const TransactionIconView = styled.View`
