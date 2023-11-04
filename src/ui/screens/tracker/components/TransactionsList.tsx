@@ -1,17 +1,46 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import styled from "styled-components/native";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Transaction } from "../../../../data/database/models/transaction.model";
 import { Transaction as ITransaction } from "../../../../data/interfaces/transaction.i";
-import { useQuery } from "../../../../data/database";
+import { useQuery, useRealm } from "../../../../data/database";
 
-export const TransactionsList = () => {
+type TransactionListProps = {
+    search?: string;
+}
+
+export const TransactionsList = ({search}: TransactionListProps) => {
+
+    const realm = useRealm();
+
+    if (search?.length) {
+
+        const transactions = realm.objects<Transaction>(Transaction.schema.name);
+
+        const filtredTransactions = transactions.filtered("what CONTAINS $0", search);
+            
+        return (
+            <TransactionListView>
+                {filtredTransactions.map(transaction => (
+                    <TransactionItem
+                        key={transaction._id}
+                        {...transaction}
+                    />
+                ))}
+            </TransactionListView>
+        );
+    } 
 
     const transactionsQuery = useQuery(Transaction);
-
+    
     return (
         <TransactionListView>
-           {transactionsQuery.map(transaction => <TransactionItem key={transaction._id} {...transaction}/>)}
+           {transactionsQuery.map(transaction => (
+                <TransactionItem
+                    key={transaction._id}
+                    {...transaction}
+                />
+            ))}
         </TransactionListView>
     );
 };
