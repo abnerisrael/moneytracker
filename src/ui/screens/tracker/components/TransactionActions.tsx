@@ -1,20 +1,16 @@
 import styled from 'styled-components/native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
-import { useTransaction } from '../../../redux/features/transaction/useTransaction';
 
 export const TransactionActions = () => {
     const {navigate} = useNavigation();
-    const {setType} = useTransaction();
 
     const handleAddMoney = () => {
-        setType('input');
-        navigate('register');
+        navigate('register', {type: 'input'});
     }
     
     const handleRemoveMoney = () => {
-        setType('output');
-        navigate('register');
+        navigate('register', {type: 'output'});
     }
 
     return(

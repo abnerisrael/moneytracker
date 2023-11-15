@@ -3,17 +3,19 @@ import styled from 'styled-components/native';
 import { TransactionHistory } from "./components/TransactionHistory";
 import { MonthReferenceSelector } from "./components/MonthReferenceSelector";
 import { useTrackerScreenViewModel } from "./useTrackerScreenViewModel";
+import { TransactionActions } from "./components/TransactionActions";
+import { Color } from "../../styles/color";
 
 export const TrackerScreenView = () => {
 
-  const {transactions, totalInputs, totalOutputs} = useTrackerScreenViewModel();
+  const {totalAvaliable, totalInputs, totalOutputs} = useTrackerScreenViewModel();
 
   return (
     <ScreenView>
       <MonthReferenceSelector />
       <MoneyAvaliableView>
         <Subtitle>Saldo disponível</Subtitle>
-        <LabelMoneyAvaliableLabel>R$ 1000,00</LabelMoneyAvaliableLabel>
+        <LabelMoneyAvaliableLabel>R$ {totalAvaliable}</LabelMoneyAvaliableLabel>
         <EntradasSaidasView>
           <EntradasView>
             <Subtitle>Entradas</Subtitle>
@@ -26,7 +28,8 @@ export const TrackerScreenView = () => {
         </EntradasSaidasView>
       </MoneyAvaliableView>
       <HistoryAreaView>
-        <TransactionHistory transactions={transactions}/>
+        <TransactionHistory />
+        <TransactionActions />
       </HistoryAreaView>
     </ScreenView>
   );
@@ -44,12 +47,12 @@ const LabelMoneyAvaliableLabel = styled.Text`
 `;
 
 const LabelMoneyEntradaLabel = styled.Text`
-  color: green;
+  color: ${Color.Money.Input};
   font-size: 28px;
 `;
 
 const LabelMoneySaidaLabel = styled.Text`
-  color: red;
+  color: ${Color.Money.Output};
   font-size: 28px;
 `;
 

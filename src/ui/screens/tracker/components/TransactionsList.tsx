@@ -1,36 +1,65 @@
-import React from "react";
-import { FlatList } from "react-native";
+import React, { useCallback, useMemo } from "react";
 import styled from "styled-components/native";
-import { Transaction } from "../../../../data/interfaces/transaction.i";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { Transaction } from "../../../../data/database/models/transaction.model";
+import { iTransaction } from "../../../../data/interfaces/transaction.i";
+import { useQuery, useRealm } from "../../../../data/database";
+import moment from "moment";
+import { Color } from "../../../styles/color";
 
-interface TransactionListProps {
-    data: Transaction[]
+type TransactionListProps = {
+    search?: string;
 }
 
-export const TransactionsList = (props: TransactionListProps) => {
-    if (props.data.length < 2) {
-        return <TransactionItem {...props.data[0]} />
-    }
+export const TransactionsList = ({search}: TransactionListProps) => {
 
+    const realm = useRealm();
+
+    if (search?.length) {
+
+        const transactions = realm.objects<Transaction>(Transaction.schema.name);
+
+        const filtredTransactions = transactions.filtered("what CONTAINS $0", search);
+            
+        return (
+            <TransactionListView>
+                {filtredTransactions.map(transaction => (
+                    <TransactionItem
+                        key={transaction._id}
+                        {...transaction}
+                    />
+                ))}
+            </TransactionListView>
+        );
+    } 
+
+    const transactionsQuery = useQuery(Transaction);
+    
     return (
         <TransactionListView>
-            <FlatList
-                data={props.data}
-                keyExtractor={item => item.id}
-                renderItem={({item}) => <TransactionItem {...item} />}
-            />
+           {transactionsQuery.map(transaction => (
+                <TransactionItem
+                    key={transaction._id}
+                    {...transaction}
+                />
+            ))}
         </TransactionListView>
     );
 };
 
+const TransactionItem = (props: iTransaction) => {
 
-const TransactionItem = (props: Transaction) => {
+    const when = moment(props.when).format('MM MMM');
+
+    const iconName = props.type === 'input' ? 'plus' : 'minus';
+
+    const iconColor =  props.type === 'input' ? Color.Money.Input : Color.Money.Output;
+
     return (
         <TransactionItemView>
             <ItemLeft>
                 <TransactionIconView>
-                    <FontAwesome name="money" size={20} color="#000" style={{alignSelf: 'center'}}/>
+                    <FontAwesome name={iconName} size={20} color={iconColor} style={{ alignSelf: 'center' }} />
                 </TransactionIconView>
             </ItemLeft>
             <ItemCenter>
@@ -40,21 +69,21 @@ const TransactionItem = (props: Transaction) => {
                 <AsLabel>{props.as}</AsLabel>
             </ItemCenter>
             <ItemRight>
-                <WhenLabel>1 AGO</WhenLabel>
+                <WhenLabel>{when}</WhenLabel>
             </ItemRight>
         </TransactionItemView>
     );
 };
 
 
-const TransactionListView = styled.View`
+const TransactionListView = styled.ScrollView`
   flex: 1;
 `;
 
 const TransactionItemView = styled.View`
   flex: 1;
   flex-direction: row;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 `;
 
 const TransactionIconView = styled.View`

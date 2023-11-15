@@ -4,6 +4,7 @@ import { HowMuchScreenView } from '../screens/register/HowMuchScreenView';
 import { WhereScreenView } from '../screens/register/WhereScreenView';
 import { AsScreenView } from '../screens/register/AsScreenView';
 import { WhenScreenView } from '../screens/register/WhenScreenView';
+import SaveDataScreenView from '../screens/register/SaveDataScreenView';
 
 const Stack = createStackNavigator();
 
@@ -16,6 +17,7 @@ export function RegisterStackNavigation() {
         <Stack.Screen name="where" component={WhereScreenView} />
         <Stack.Screen name="when" component={WhenScreenView} />
         <Stack.Screen name="as" component={AsScreenView} />
+        <Stack.Screen name="save" component={SaveDataScreenView} />
       </Stack.Group>
     </Stack.Navigator>
   );
