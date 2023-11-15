@@ -2,8 +2,10 @@ import React, { useCallback, useMemo } from "react";
 import styled from "styled-components/native";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Transaction } from "../../../../data/database/models/transaction.model";
-import { Transaction as ITransaction } from "../../../../data/interfaces/transaction.i";
+import { iTransaction } from "../../../../data/interfaces/transaction.i";
 import { useQuery, useRealm } from "../../../../data/database";
+import moment from "moment";
+import { Color } from "../../../styles/color";
 
 type TransactionListProps = {
     search?: string;
@@ -45,12 +47,19 @@ export const TransactionsList = ({search}: TransactionListProps) => {
     );
 };
 
-const TransactionItem = (props: ITransaction) => {
+const TransactionItem = (props: iTransaction) => {
+
+    const when = moment(props.when).format('MM MMM');
+
+    const iconName = props.type === 'input' ? 'plus' : 'minus';
+
+    const iconColor =  props.type === 'input' ? Color.Money.Input : Color.Money.Output;
+
     return (
         <TransactionItemView>
             <ItemLeft>
                 <TransactionIconView>
-                    <FontAwesome name="money" size={20} color="#000" style={{ alignSelf: 'center' }} />
+                    <FontAwesome name={iconName} size={20} color={iconColor} style={{ alignSelf: 'center' }} />
                 </TransactionIconView>
             </ItemLeft>
             <ItemCenter>
@@ -60,7 +69,7 @@ const TransactionItem = (props: ITransaction) => {
                 <AsLabel>{props.as}</AsLabel>
             </ItemCenter>
             <ItemRight>
-                <WhenLabel>{props.when}</WhenLabel>
+                <WhenLabel>{when}</WhenLabel>
             </ItemRight>
         </TransactionItemView>
     );

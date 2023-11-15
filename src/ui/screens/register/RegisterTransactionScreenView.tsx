@@ -1,6 +1,6 @@
-import React, { useMemo, useState } from "react";
+import React from "react";
 import styled from 'styled-components/native';
-import { As, Type } from "../../../data/interfaces/transaction.i";
+import { As, TransactionForm } from "../../../data/interfaces/transaction.i";
 import { FontAwesomeIconsName } from "../../components/IconsName";
 import { Chip } from "../../components/Chips";
 import { Keyboard, StyleSheet } from "react-native";
@@ -19,14 +19,6 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MainStackParamList } from "../../navigation/MainStackNavigation";
 
 
-type FormTransaction = {
-  what: string;
-  how_much: string;
-  when: string;
-  where: string;
-  as: string;
-}
-
 const schema = yup
   .object({
     what: yup.string().required(),
@@ -34,6 +26,7 @@ const schema = yup
     when: yup.string().required(),
     where: yup.string().required(),
     as: yup.string().required(),
+    type: yup.string().required()
   })
   .required()
 
@@ -55,17 +48,18 @@ type Props = NativeStackScreenProps<MainStackParamList, 'register'>;
 
 export const RegisterTransactionScreenView = ({route}: Props) => {
 
-  const {datePicker, onSubmit} = useRegisterTransactionScreenViewModel(route?.params?.type);
+  const {datePicker, onSubmit} = useRegisterTransactionScreenViewModel();
 
   const {
     control,
     handleSubmit,
     formState: { errors },
     setValue,
-  } = useForm<FormTransaction>({
+  } = useForm<TransactionForm>({
     resolver: yupResolver(schema),
     defaultValues: {
-      when: datePicker.getDate().format('DD/MM/Y')
+      when: datePicker.getDate().format('DD/MM/Y'),
+      type: route?.params?.type || ''
     }
   });
 

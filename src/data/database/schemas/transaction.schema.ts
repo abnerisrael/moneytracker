@@ -7,7 +7,7 @@ export const TransactionSchema: ObjectSchema = {
     what: 'string',
     how_much: 'float',
     where: 'string',
-    when: 'string',
+    when: 'date',
     as: 'string',
     type: 'string',
     created_at: 'date',

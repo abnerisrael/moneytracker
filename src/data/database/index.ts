@@ -6,6 +6,7 @@ import { Transaction } from './models/transaction.model';
 // Create a configuration object
 const realmConfig: Realm.Configuration = {
   schema: [Transaction],
+  deleteRealmIfMigrationNeeded: __DEV__
 };
 
 // Create a realm context

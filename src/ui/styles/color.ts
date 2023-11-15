@@ -14,6 +14,10 @@ const OpacityGray = '#f0f0f0';
 
 const Error = '#e60000';
 
+const Input = '#008000';
+
+const Output = '#ff0000';
+
 export const Color = {
   Primary,
   Secondary,
@@ -23,4 +27,8 @@ export const Color = {
   MediumGray,
   OpacityGray,
   Error,
+  Money: {
+    Input,
+    Output,
+  }
 };

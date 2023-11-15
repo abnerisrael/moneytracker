@@ -1,7 +1,6 @@
 import styled from 'styled-components/native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
-import { useTransaction } from '../../../redux/features/transaction/useTransaction';
 
 export const TransactionActions = () => {
     const {navigate} = useNavigation();
