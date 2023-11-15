@@ -1,9 +1,9 @@
-import React, { useCallback, useMemo } from "react";
+import React from "react";
 import styled from "styled-components/native";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Transaction } from "../../../../data/database/models/transaction.model";
 import { iTransaction } from "../../../../data/interfaces/transaction.i";
-import { useQuery, useRealm } from "../../../../data/database";
+import { useQuery } from "../../../../data/database";
 import moment from "moment";
 import { Color } from "../../../styles/color";
 
@@ -13,13 +13,14 @@ type TransactionListProps = {
 
 export const TransactionsList = ({search}: TransactionListProps) => {
 
-    const realm = useRealm();
-
     if (search?.length) {
 
-        const transactions = realm.objects<Transaction>(Transaction.schema.name);
+        const transactions = useQuery(Transaction);
 
-        const filtredTransactions = transactions.filtered("what CONTAINS $0", search);
+        const filtredTransactions = transactions.filtered(
+            "what CONTAINS $0 SORT(when DESC)", 
+            search
+        );
             
         return (
             <TransactionListView>
@@ -33,7 +34,8 @@ export const TransactionsList = ({search}: TransactionListProps) => {
         );
     } 
 
-    const transactionsQuery = useQuery(Transaction);
+    const transactionsQuery = useQuery(Transaction)
+    .sorted('when', true);
     
     return (
         <TransactionListView>
@@ -49,7 +51,7 @@ export const TransactionsList = ({search}: TransactionListProps) => {
 
 const TransactionItem = (props: iTransaction) => {
 
-    const when = moment(props.when).format('MM MMM');
+    const when = moment(props.when).format('DD MMM');
 
     const iconName = props.type === 'input' ? 'plus' : 'minus';
 
