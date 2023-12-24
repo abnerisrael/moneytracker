@@ -1,23 +1,22 @@
 import React from "react";
 import styled from 'styled-components/native';
-import { As, TransactionForm } from "../../../data/interfaces/transaction.i";
-import { FontAwesomeIconsName } from "../../components/IconsName";
-import { Chip } from "../../components/Chips";
 import { Keyboard, StyleSheet } from "react-native";
-import Tipography from "../../styles/tipography";
-import { FiledTextInput } from "../../components/FiledTextInput";
-import { TextButton } from "../../components/TextButton";
-import { OutlinedButton } from "../../components/OutlinedButton";
-import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup";
-import { Color } from "../../styles/color";
 import { Masks } from 'react-native-mask-input';
-import { MaskTextInput } from "../../components/MaskTextInput";
-import { useRegisterTransactionScreenViewModel } from "./useRegisterTransactionScreenViewModel";
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { FontAwesomeIconsName } from "../../components/IconsName";
+import { As, TransactionForm } from "../../../data/interfaces/transaction.i";
+import { Controller, useForm } from "react-hook-form";
+import { FiledTextInput } from "../../components/FiledTextInput";
+import { MaskTextInput } from "../../components/MaskTextInput";
+import { Chip } from "../../components/Chips";
+import { OutlinedButton } from "../../components/OutlinedButton";
+import { TextButton } from "../../components/TextButton";
+import { Color } from "../../styles/color";
+import Tipography from "../../styles/tipography";
 import { MainStackParamList } from "../../navigation/MainStackNavigation";
-
+import { useRegisterScreenViewModel } from "./useRegisterScreenViewModel";
 
 const schema = yup
   .object({
@@ -44,11 +43,13 @@ const paymentTypes: PaymentTypes[] = [
   {type: "OTHER"},
 ]
 
-type Props = NativeStackScreenProps<MainStackParamList, 'register'>;
+type Props = NativeStackScreenProps<MainStackParamList, 'Register'>;
 
-export const RegisterTransactionScreenView = ({route}: Props) => {
+export const RegisterScreenView = ({route}: Props) => {
 
-  const {datePicker, onSubmit} = useRegisterTransactionScreenViewModel();
+  const {params} = route;
+
+  const {defaultValues, title, datePicker, onSubmit} = useRegisterScreenViewModel(params);
 
   const {
     control,
@@ -57,10 +58,7 @@ export const RegisterTransactionScreenView = ({route}: Props) => {
     setValue,
   } = useForm<TransactionForm>({
     resolver: yupResolver(schema),
-    defaultValues: {
-      when: datePicker.getDate().format('DD/MM/Y'),
-      type: route?.params?.type || ''
-    }
+    defaultValues,
   });
 
   datePicker.subscribeHandlerChange((date)=>{
@@ -71,7 +69,6 @@ export const RegisterTransactionScreenView = ({route}: Props) => {
     datePicker.showDatepicker();
   }
 
-  const title = route?.params?.type === "input" ? 'Input Register' : 'Output Register';
 
   return (
     <ScreenView>

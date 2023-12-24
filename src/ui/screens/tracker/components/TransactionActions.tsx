@@ -6,11 +6,11 @@ export const TransactionActions = () => {
     const {navigate} = useNavigation();
 
     const handleAddMoney = () => {
-        navigate('register', {type: 'input'});
+        navigate('Register', {type: 'input', _id:'', scenarie:'create'});
     }
     
     const handleRemoveMoney = () => {
-        navigate('register', {type: 'output'});
+        navigate('Register', {type: 'output', _id:'', scenarie:'create'});
     }
 
     return(

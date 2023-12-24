@@ -1,3 +1,6 @@
+import moment, * as moments from 'moment';
+import 'moment/locale/pt-br';
+
 /**
  * Formats a string money value
  * to number.
@@ -11,3 +14,5 @@ export const moneyToNumber = (value: string): number => {
   const valorNumerico = parseFloat(matches.join('').replace(',', '.'));
   return valorNumerico;
 }
+
+export const dateToMoment = (date: Date) => moment(date);
